@@ -7,11 +7,10 @@ import javax.persistence.Persistence;
 public final class EntityManagerConfig {
 
     private static final EntityManagerFactory FACTORY = Persistence.createEntityManagerFactory("jpa-intro");
-    private static final EntityManager ENTITY_MANAGER =FACTORY.createEntityManager();
+    private static final EntityManager ENTITY_MANAGER = FACTORY.createEntityManager();
 
-    private EntityManagerConfig(){
+    private EntityManagerConfig(){}
 
-    }
     public static EntityManager getEntityManager(){
         return ENTITY_MANAGER;
     }
