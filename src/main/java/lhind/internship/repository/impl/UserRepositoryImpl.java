@@ -19,8 +19,8 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(Integer integer) {
-        return Optional.empty();
+    public Optional<User> findById(Integer id) {
+        return Optional.ofNullable(entityManager.find(User.class, id));
     }
 
     @Override
@@ -46,11 +46,18 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void delete(User user) {
+        if (user.getId() != null) {
+            entityManager.getTransaction().begin();
+            findById(user.getId()).ifPresent(entityManager::remove);
+            entityManager.getTransaction().commit();
+        }
 
     }
 
     @Override
     public Optional<User> findByUsername(String username) {
-        return Optional.empty();
+        TypedQuery<User> result = entityManager.createQuery(Queries.FIND_USER_BY_USERNAME, User.class);
+        result.setParameter("username", username);
+        return Optional.ofNullable(result.getSingleResult());
     }
 }
